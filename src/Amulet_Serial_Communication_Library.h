@@ -19,8 +19,8 @@
   Reworked on 10 Feb 2017 by Brian Deters
  */
 
-#ifndef AmuletLCD_h
-#define AmuletLCD_h
+#ifndef Amulet_Serial_Communication_Library_h
+#define Amulet_Serial_Communication_Library_h
 
 #include "Arduino.h"
 

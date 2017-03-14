@@ -4,8 +4,8 @@
   Released into the public domain.
 */
 
-#include "Arduino.h"
-#include "AmuletLCD.h"
+
+#include "Amulet_Serial_Communication_Library.h"
 
 /**
 * constructor
