@@ -1,67 +1,60 @@
-# Arduino Amulet UART Communication Library v1.0 #
-http://github.com/Amulettechnologies/
-ReadMe file  
-Brian Deters  Feb 2017
+# AmuletLCD
 
+A Particle library for AmuletLCD
 
-## Introduction ##
+## Welcome to your library!
 
-The Amulet UART communication library for Arduino simplifies the communication between Arduino and any of the Amulet display modules. Amulet has developed it's own CRC based full-duplex serial communication protocol.  A typical message packet looks like:
+To get started, modify the sources in [src](src). Rename the example folder inside [examples](examples) to a more meaningful name and add additional examples in separate folders.
 
-![](http://www.amulettechnologies.com/images/jdownloads/downloadimages/Protocol.jpg)
+To compile your example you can use `particle compile examples/usage` command in [Particle CLI](https://docs.particle.io/guide/tools-and-features/cli#update-your-device-remotely) or use our [Desktop IDE](https://docs.particle.io/guide/tools-and-features/dev/#compiling-code).
 
+Libraries can also depend on other libraries. To add a dependency use [`particle library add`](https://docs.particle.io/guide/tools-and-features/cli#adding-a-library) or [library management](https://docs.particle.io/guide/tools-and-features/dev/#managing-libraries) in Desktop IDE.
 
-The library abstracts out the having to learn various opcodes, the complexity of packetizing the communication and calculation of CRC. With this library, Arduino just needs to assign certain Amulet defined variables, and the variables will be read by the Amulet display automatically.  A Serial.Event call is used to call the library, so when there is communication on the serial BUS, the library does its "magic". 
+After the library is done you can upload it with `particle library upload` or `Upload` command in the IDE. This will create a private (only visible by you) library that you can use in other projects. If you wish to make your library public, use `particle library publish` or `Publish` command.
 
-If you want to know in detail how the Amulet protocol works, you can look at the source in the library.  The code is well documented with comments, to make it easy to understand. 
+_TODO: update this README_
 
-"Arduino Amulet UART Communication Library" is licensed under Lesser General Public License 
- [(LGPL Version 2.1)](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html).
+## Usage
 
-## Installation ##
-To use the **Arduino Amulet UART Communication Library**:  
-- Go to http://github.com/AmuletTechnologies/AmuletLCD, click the **Download ZIP** button and save the ZIP file to a convenient location on your PC.
-- Uncompress the downloaded file.  This will result in a folder containing all the files for the library, that has a name that includes the branch name, usually **AmuletLCD-master**.
-- Rename the folder to just **AmuletLCD**.
-- Copy the renamed folder into the libraries folder under your Arduino installation directory. 
+Connect XYZ hardware, add the AmuletLCD library to your project and follow this simple example:
 
-## Examples ##
-The following examples are included with the **Amulet communication library**:
-###  Blinky_GUI  
+```
+AmuletLCD amuletLCD;
 
-A slider GUI on the Amulet display is used to control the blink rate of the onboard LED of the Arduino Uno.  The display passes the value to variable, AmuletWords[0]. The range of values go from 0 to 500.  The Arduino updates AmuletWords[0] as the slider changes.
+void setup() {
+  amuletLCD.begin();
+}
 
-    void loop() {
-		interval = AmuletWords[0];		//slider value from display 
-		digitalWrite(13, HIGH);  		// set the LED on
-		delay(interval);              	// wait for interval sec.
-		digitalWrite(13, LOW);    		// set the LED off
-		delay(interval);              	// wait for interval sec.
-	}
-  
-###  Button_GUI  
+void loop() {
+  amuletLCD.process();
+}
+```
 
-A check box GUI on the Amulet display in the form of an on/off switch controls the state of the onboard LED of the Arduino. The byte value, either 0x00 (off) or 0x01 (on) gets communicated to Aduino, within the variable, AmuletBytes[0]. 
+See the [examples](examples) folder for more details.
 
-    void loop() {
-       	value = AmuletBytes[0];
-    	digitalWrite(13, value);
-      	delay(100);
-    } 
-  
+## Documentation
 
-###  ReadPOT_GUI  
+TODO: Describe `AmuletLCD`
 
-The values of a POT is read by Arduino using the analog pin 0 (A0) and this value is communicated to the Amulet display by the assignment of AmultWords[0]. 
+## Contributing
 
+Here's how you can make changes to this library and eventually contribute those changes back.
 
-    void loop() {
-       	AmuletWords[0] = analogRead(0);
-     	 delay(100);
-    }
+To get started, [clone the library from GitHub to your local machine](https://help.github.com/articles/cloning-a-repository/).
 
-The AmuletWords variable is used rather than AmuletBytes because the POT value goes from 0 to 1023.
+Change the name of the library in `library.properties` to something different. You can add your name at then end.
 
+Modify the sources in <src> and <examples> with the new behavior.
 
-## GEMstudio Software ##
-Amulet offers free software to program the Amulet modules. The software says it is a trial version, but for GUI projects under 5 pages, the software is full featured. You just need to register on their website.   [Free GEMstudio](http://www.amulettechnologies/index.php/sales/try-software).  The GEMstudio project files for the 3 examples can be found in the extras folder of the library.
+To compile an example, use `particle compile examples/usage` command in [Particle CLI](https://docs.particle.io/guide/tools-and-features/cli#update-your-device-remotely) or use our [Desktop IDE](https://docs.particle.io/guide/tools-and-features/dev/#compiling-code).
+
+After your changes are done you can upload them with `particle library upload` or `Upload` command in the IDE. This will create a private (only visible by you) library that you can use in other projects. Do `particle library add AmuletLCD_myname` to add the library to a project on your machine or add the AmuletLCD_myname library to a project on the Web IDE or Desktop IDE.
+
+At this point, you can create a [GitHub pull request](https://help.github.com/articles/about-pull-requests/) with your changes to the original library. 
+
+If you wish to make your library public, use `particle library publish` or `Publish` command.
+
+## LICENSE
+Copyright 2017 Brian Deters
+
+Licensed under the <insert your choice of license here> license
