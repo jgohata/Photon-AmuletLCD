@@ -3,15 +3,15 @@
 *  To make Amulet request the proper variable, place this command in a view widget's (bargraph, numericField, etc) Href in GEmstudio:
 *  Amulet:uart1.word(0).value()
 * For other ports, change uart1 to your selected port.
-* 
-* The GEMstudio project file is located in the AmuletLCD library directory under folder called "extras". Examples of numeric field, 
+*
+* The GEMstudio project file is located in the AmuletLCD library directory under folder called "extras". Examples of numeric field,
 * bargraph and image sequence are shown.
 */
 
 #include <AmuletLCD.h>
 
 #define VDP_SIZE 32
-//Virtual Dual Port memory used for communicating with Amulet Display 
+//Virtual Dual Port memory used for communicating with Amulet Display
 uint16_t AmuletWords[VDP_SIZE]  = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 AmuletLCD myModule;
@@ -26,6 +26,7 @@ void setup() {
 void loop() {
   //store analog data in local buffer and wait for Amulet to poll that buffer.
   AmuletWords[0] = analogRead(0);
+  Serial.println(AmuletWords[0]);
   delay(100);
 }
 

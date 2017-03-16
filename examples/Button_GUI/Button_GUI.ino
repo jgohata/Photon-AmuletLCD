@@ -11,25 +11,25 @@
 
 
 #define VDP_SIZE 32
-//Virtual Dual Port memory used for communicating with Amulet Display 
+//Virtual Dual Port memory used for communicating with Amulet Display
 uint8_t AmuletBytes[VDP_SIZE]  = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 AmuletLCD myModule;
 byte value;
 void setup() {
 	//Arduino Uno On Board LED defined on Pin 13
-  pinMode(13, OUTPUT);
-  //start communication with Amulet Display at default baud         
+  pinMode(D7, OUTPUT);
+  //start communication with Amulet Display at default baud
   myModule.begin(115200);
- 
+
   //register our local buffer with Amulet state machine
-  myModule.setBytePointer(AmuletBytes,VDP_SIZE); 
+  myModule.setBytePointer(AmuletBytes,VDP_SIZE);
 }
 
 void loop() {
     value = AmuletBytes[0];
-	  digitalWrite(13, value);
-  	delay(100);         
+	  digitalWrite(D7, value);
+  	delay(100);
   }
 
 //This method automatically gets called if there is any serial data available

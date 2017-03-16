@@ -133,9 +133,9 @@ int8_t AmuletLCD::setByte(uint8_t loc, uint8_t value)
 	if(Serial.availableForWrite() >= 6)
 	{
 		uint8_t setByteCommand[6] = {_AMULET_ADDRESS, _SET_BYTE, loc, value, 0, 0};
-		uint16_t CRC = calcCRC(setByteCommand, 4);  //TODO: make a function to calculate AND append the CRC to the buffer
-		setByteCommand[4] = CRC & 0xFF;
-		setByteCommand[5] = (CRC >> 8) & 0xFF;
+		uint16_t _CRC = calcCRC(setByteCommand, 4);  //TODO: make a function to calculate AND append the CRC to the buffer
+		setByteCommand[4] = _CRC & 0xFF;
+		setByteCommand[5] = (_CRC >> 8) & 0xFF;
 		Serial.write(setByteCommand,6);
 		return 0;
 		// TODO: set up response state machine
@@ -169,9 +169,9 @@ int8_t AmuletLCD::setWord(uint8_t loc, uint16_t value)
 	if(Serial.availableForWrite() >= 7)
 	{
 		uint8_t setWordCommand[7] = {_AMULET_ADDRESS,_SET_WORD,loc, uint8_t((value >> 8) & 0xFF), uint8_t(value & 0xFF), 0, 0};
-		uint16_t CRC = calcCRC(setWordCommand, 5);  //TODO: make a function to calculate AND append the CRC to the buffer
-		setWordCommand[5] = (uint8_t)(CRC & 0xFF);
-		setWordCommand[6] = (uint8_t)((CRC >> 8) & 0xFF);
+		uint16_t _CRC = calcCRC(setWordCommand, 5);  //TODO: make a function to calculate AND append the CRC to the buffer
+		setWordCommand[5] = (uint8_t)(_CRC & 0xFF);
+		setWordCommand[6] = (uint8_t)((_CRC >> 8) & 0xFF);
 		Serial.write(setWordCommand,7);
 		return 0;
 		// TODO: set up response state machine
@@ -191,9 +191,9 @@ int8_t AmuletLCD::setColor(uint8_t loc, uint32_t value)
 	if(Serial.availableForWrite() >= 9)
 	{
 		uint8_t setWordCommand[9] = {_AMULET_ADDRESS,_SET_COLOR,loc, uint8_t((value >> 24) & 0xFF), uint8_t((value >> 16) & 0xFF), uint8_t((value >> 8) & 0xFF), uint8_t(value & 0xFF), 0, 0};
-		uint16_t CRC = calcCRC(setWordCommand, 7);  //TODO: make a function to calculate AND append the CRC to the buffer
-		setWordCommand[7] = (uint8_t)(CRC & 0xFF);
-		setWordCommand[8] = (uint8_t)((CRC >> 8) & 0xFF);
+		uint16_t _CRC = calcCRC(setWordCommand, 7);  //TODO: make a function to calculate AND append the CRC to the buffer
+		setWordCommand[7] = (uint8_t)(_CRC & 0xFF);
+		setWordCommand[8] = (uint8_t)((_CRC >> 8) & 0xFF);
 		Serial.write(setWordCommand,9);
 		return 0;
 		// TODO: set up response state machine

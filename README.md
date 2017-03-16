@@ -1,60 +1,66 @@
-# AmuletLCD
+# Amulet Serial Communication Library#
 
-A Particle library for AmuletLCD
+  
+Arduino Library: Brian Deters  Feb 2017
 
-## Welcome to your library!
+Port to Particle: Johnny Gohata Mar 2017 
 
-To get started, modify the sources in [src](src). Rename the example folder inside [examples](examples) to a more meaningful name and add additional examples in separate folders.
+## Introduction ##
 
-To compile your example you can use `particle compile examples/usage` command in [Particle CLI](https://docs.particle.io/guide/tools-and-features/cli#update-your-device-remotely) or use our [Desktop IDE](https://docs.particle.io/guide/tools-and-features/dev/#compiling-code).
+The Amulet UART communication library for Particle is a simple port of the existing Arduino library found on [Github](http://github.com/amulettechnologies/AmuletLCD). The library greatly simplifies the communication between Particle and any of the Amulet display modules. 
 
-Libraries can also depend on other libraries. To add a dependency use [`particle library add`](https://docs.particle.io/guide/tools-and-features/cli#adding-a-library) or [library management](https://docs.particle.io/guide/tools-and-features/dev/#managing-libraries) in Desktop IDE.
+Amulet has developed it's own CRC based full-duplex serial communication protocol.  A typical message packet looks like:
 
-After the library is done you can upload it with `particle library upload` or `Upload` command in the IDE. This will create a private (only visible by you) library that you can use in other projects. If you wish to make your library public, use `particle library publish` or `Publish` command.
+![](http://www.amulettechnologies.com/images/jdownloads/downloadimages/Protocol.jpg)
 
-_TODO: update this README_
 
-## Usage
+The library abstracts out the having to learn the details of this protocol, including various opcodes, the complexity of packetizing the communication and calculation of CRC. With this library, Particle just needs to assign certain Amulet defined variables, and the variables will be read by the Amulet display automatically.  A Serial.Event call is used to call the library, so when there is communication on the serial BUS, the library does its "magic". 
 
-Connect XYZ hardware, add the AmuletLCD library to your project and follow this simple example:
+If you want to know in detail how the Amulet protocol works, you can look at the source in the library.  The code is well documented with comments, to make it easy to understand. 
 
-```
-AmuletLCD amuletLCD;
+"Amulet Serial Communication Library" is licensed under Lesser General Public License 
+ [(LGPL Version 2.1)](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html).
 
-void setup() {
-  amuletLCD.begin();
-}
+## Installation ##
+In the Particle Web IDE, click the libraries tab, find Amulet Serial Communication Library, and choose "Include in App"
 
-void loop() {
-  amuletLCD.process();
-}
-```
+## Examples ##
+The following examples are included with the **Amulet communication library**:
+###  Blinky_GUI  
 
-See the [examples](examples) folder for more details.
+Values passed from the display can  control the blink rate of the onboard LED of the Photon.  A slider GUI can be used to control the value of the variable, AmuletWords[0]. The Photon updates AmuletWords[0] as the slider changes.
 
-## Documentation
+    void loop() {
+		interval = AmuletWords[0];		//slider value from display 
+		digitalWrite(D7, HIGH);  		// set the LED on
+		delay(interval);              	// wait for interval sec.
+		digitalWrite(D7, LOW);    		// set the LED off
+		delay(interval);              	// wait for interval sec.
+	}
+  
+###  Button_GUI  
 
-TODO: Describe `AmuletLCD`
+A check box GUI on the Amulet display in the form of an on/off switch controls the state of the onboard LED of the Photon. The byte value, either 0x00 (off) or 0x01 (on) gets communicated to the Photon, within the variable, AmuletBytes[0]. 
 
-## Contributing
+    void loop() {
+       	value = AmuletBytes[0];
+    	digitalWrite(D7, value);
+      	delay(100);
+    } 
+  
 
-Here's how you can make changes to this library and eventually contribute those changes back.
+###  ReadPOT_GUI  
 
-To get started, [clone the library from GitHub to your local machine](https://help.github.com/articles/cloning-a-repository/).
+The values of a POT is read by the Photon using the analog pin 0 (A0) and this value is communicated to the Amulet display by the assignment of AmuletWords[0]. The value can be displayed by a numeric field or use many of the gauges that come with Amulet's IDE.
 
-Change the name of the library in `library.properties` to something different. You can add your name at then end.
 
-Modify the sources in <src> and <examples> with the new behavior.
+    void loop() {
+       	AmuletWords[0] = analogRead(A0);
+     	 delay(100);
+    }
 
-To compile an example, use `particle compile examples/usage` command in [Particle CLI](https://docs.particle.io/guide/tools-and-features/cli#update-your-device-remotely) or use our [Desktop IDE](https://docs.particle.io/guide/tools-and-features/dev/#compiling-code).
+The AmuletWords variable is used rather than AmuletBytes because the POT value goes above 256.
 
-After your changes are done you can upload them with `particle library upload` or `Upload` command in the IDE. This will create a private (only visible by you) library that you can use in other projects. Do `particle library add AmuletLCD_myname` to add the library to a project on your machine or add the AmuletLCD_myname library to a project on the Web IDE or Desktop IDE.
 
-At this point, you can create a [GitHub pull request](https://help.github.com/articles/about-pull-requests/) with your changes to the original library. 
-
-If you wish to make your library public, use `particle library publish` or `Publish` command.
-
-## LICENSE
-Copyright 2017 Brian Deters
-
-Licensed under the <insert your choice of license here> license
+## GEMstudio Software ##
+Amulet offers free software to program the Amulet modules. The software says it is a trial version, but for GUI projects under 5 pages, the software is full featured. You just need to register on their website.   [Free GEMstudio](http://www.amulettechnologies/index.php/sales/try-software).  GEMstudio includes a GUI simulator which communicates out the serial COM port.  So even without an actual Amulet's smart display module, you can see your design interact with the Particle through the USB cable. 
